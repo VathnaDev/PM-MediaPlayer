@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/bottomSheetLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingStart="16dp"
+	android:paddingTop="16dp"
+	android:paddingEnd="16dp">
+	
+	<de.hdodenhof.circleimageview.CircleImageView
+		android:id="@+id/ivArtist"
+		android:layout_width="70dp"
+		android:layout_height="70dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
+		android:src="@color/colorGreen"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+	
+	<TextView
+		android:id="@+id/tvSongTitle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:layout_marginTop="8dp"
+		android:layout_marginEnd="8dp"
+		android:text="TextView"
+		android:textAppearance="@style/TextAppearance.AppCompat.Title"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@+id/ivArtist"
+		app:layout_constraintTop_toTopOf="@+id/ivArtist" />
+	
+	<TextView
+		android:id="@+id/tvArtistName"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:text="TextView"
+		app:layout_constraintStart_toEndOf="@+id/ivArtist"
+		app:layout_constraintTop_toBottomOf="@+id/tvSongTitle" />
+	
+	<View
+		android:id="@+id/view"
+		android:layout_width="0dp"
+		android:layout_height="1dp"
+		android:layout_marginStart="16dp"
+		android:layout_marginTop="8dp"
+		android:layout_marginEnd="16dp"
+		android:background="@color/colorGreen"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/ivArtist" />
+	
+	
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/rvSongList"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:layout_marginBottom="80dp"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior"
+		app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/view" />
+	
+	
+</android.support.constraint.ConstraintLayout>
