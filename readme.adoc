@@ -4,14 +4,14 @@
 
 image:/screenshots/Screenshot_1542178137.png[alt text]
 
-== Songs List BottomSheet
+=== Songs List BottomSheet
 
 image:/screenshots/Screenshot_1542178146.png[alt text]
 
-== Songs List BottomSheet Full Height
+=== Songs List BottomSheet Full Height
 
-image:/screenshots/Screenshot_1542178150.png[alt text]
+image:/screenshots/Screenshot_1542178150.png[alt text]  image:/screenshots/Screenshot_1542178150.png[alt text]
 
-== _Another Theme Styles_
+=== _Another Theme Styles_
 
 image:/screenshots/Screenshot_1542162746.png[alt text]
