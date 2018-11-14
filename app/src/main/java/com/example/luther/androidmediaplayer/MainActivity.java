@@ -1,6 +1,9 @@
 package com.example.luther.androidmediaplayer;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -8,13 +11,21 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,10 +100,15 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     private boolean isShuffle;
     //endregion
 
+    private ObjectAnimator animator;
+
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initialize();
@@ -105,8 +121,18 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         changeSong(0);
         btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_circle));
 
-        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
-        ivArtistProfile.startAnimation(rotateAnimation);
+
+//        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
+//        ivArtistProfile.startAnimation(rotateAnimation);
+
+
+        animator = ObjectAnimator.ofFloat(ivArtistProfile,"rotation",0f,360f);
+        animator.setDuration(5000);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
+
 
         tvEndTime.setText(String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
@@ -225,9 +251,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
             Picasso.get()
                     .load(currentPlayingSong.getArtistPhoto())
                     .into(ivArtistProfile);
-//            Picasso.get()
-//                    .load(currentPlayingSong.getArtistPhoto())
-//                    .into(ivBackground);
             Picasso.get()
                     .load(currentPlayingSong.getArtistPhoto())
                     .into(new Target() {
@@ -242,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
                         @Override
                         public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
+                            Log.d("TAG", "onBitmapFailed: " + e.getMessage());
                         }
 
                         @Override
@@ -281,9 +304,11 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     public void onBtnPlayClicked() {
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
+            animator.pause();
             btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_circle));
         } else {
             mMediaPlayer.start();
+            animator.resume();
             btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_circle));
         }
     }
