@@ -3,7 +3,9 @@ package com.example.luther.androidmediaplayer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.view.KeyEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -22,6 +26,7 @@ import com.example.luther.androidmediaplayer.dummy.MusicFactory;
 import com.example.luther.androidmediaplayer.fragments.SongListFragment;
 import com.example.luther.androidmediaplayer.model.Song;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,6 +41,7 @@ import jp.wasabeef.blurry.Blurry;
 
 public class MainActivity extends AppCompatActivity implements SongListFragment.OnSongClickListener {
 
+    //region Butter Knife
     @BindView(R.id.ivArtistProfile)
     CircleImageView ivArtistProfile;
     @BindView(R.id.tvSongTitle)
@@ -64,10 +70,15 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     SeekBar skVolume;
     @BindView(R.id.btnShuffle)
     ImageButton btnShuffle;
-
+    @BindView(R.id.ivBackground)
+    ImageView ivBackground;
+    //endregion
+    //region Public Constants
     public final String IS_REPEAT = "is_repeat";
     public final String IS_SHUFFLE = "is_shuffle";
 
+    //endregion
+    //region Global variable
     private SongListFragment songListFragment;
     private AudioManager audioManager;
     private MediaPlayer mMediaPlayer;
@@ -76,8 +87,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     private List<Song> songs;
     private boolean isRepeat;
     private boolean isShuffle;
-    private double startTime = 0;
-    private double finalTime = 0;
+    //endregion
 
     @SuppressLint("DefaultLocale")
     @Override
@@ -86,64 +96,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initialize();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        AudioManager audio = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            skVolume.setProgress(currentVolume + 1);
-            return false;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            skVolume.setProgress(currentVolume - 1);
-            return false;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @SuppressLint("DefaultLocale")
-    private void changeSong(final int songIndex) {
-        try {
-            currentPlayingSong = songs.get(songIndex);
-            mMediaPlayer.reset();
-            mMediaPlayer.setDataSource(this, currentPlayingSong.getSongUri());
-            mMediaPlayer.prepare();
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if (isRepeat)
-                        changeSong(songIndex);
-                    else if (isShuffle) {
-                        Random rand = new Random();
-                        int n = rand.nextInt(songs.size());
-                        changeSong(n);
-                    } else
-                        changeSong(songIndex + 1);
-                }
-            });
-
-            tvArtistName.setText(currentPlayingSong.getArtistName());
-            tvSongTitle.setText(currentPlayingSong.getTitle());
-            Picasso.get()
-                    .load(currentPlayingSong.getArtistPhoto())
-                    .into(ivArtistProfile);
-
-            tvEndTime.setText(String.format("%02d:%02d",
-                    TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
-                    TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()))
-            ));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -156,18 +108,13 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
         ivArtistProfile.startAnimation(rotateAnimation);
 
-        tvArtistName.setText(currentPlayingSong.getArtistName());
-        tvSongTitle.setText(currentPlayingSong.getTitle());
-        Picasso.get()
-                .load(currentPlayingSong.getArtistPhoto())
-                .into(ivArtistProfile);
-
         tvEndTime.setText(String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
                 TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()))
         ));
 
+        double startTime = 0;
         seekbar.setProgress((int) startTime);
         seekbar.setMax(mMediaPlayer.getDuration() / 1000);
         seekbar.getThumb().mutate().setAlpha(0);
@@ -232,6 +179,89 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         btnShuffle.setImageTintList(getResources().getColorStateList(color));
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        AudioManager audio = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            skVolume.setProgress(currentVolume + 1);
+            return false;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            skVolume.setProgress(currentVolume - 1);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void changeSong(final int songIndex) {
+        try {
+            currentPlayingSong = songs.get(songIndex);
+            mMediaPlayer.reset();
+            mMediaPlayer.setDataSource(this, currentPlayingSong.getSongUri());
+            mMediaPlayer.prepare();
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if (isRepeat)
+                        changeSong(songIndex);
+                    else if (isShuffle) {
+                        Random rand = new Random();
+                        int n = rand.nextInt(songs.size());
+                        changeSong(n);
+                    } else
+                        changeSong(songIndex + 1);
+                }
+            });
+
+            tvArtistName.setText(currentPlayingSong.getArtistName());
+            tvSongTitle.setText(currentPlayingSong.getTitle());
+            Picasso.get()
+                    .load(currentPlayingSong.getArtistPhoto())
+                    .into(ivArtistProfile);
+//            Picasso.get()
+//                    .load(currentPlayingSong.getArtistPhoto())
+//                    .into(ivBackground);
+            Picasso.get()
+                    .load(currentPlayingSong.getArtistPhoto())
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Blurry.with(MainActivity.this)
+                                    .sampling(1)
+                                    .color(Color.argb(66, 0, 200, 255))
+                                    .from(bitmap)
+                                    .into(ivBackground);
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+
+            tvEndTime.setText(String.format("%02d:%02d",
+                    TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
+                    TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()))
+            ));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Runnable UpdateSongTime = new Runnable() {
         @SuppressLint("DefaultLocale")
         @Override
@@ -288,7 +318,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         songListFragment = SongListFragment.instance(songs, currentPlayingSong);
         songListFragment.show(getSupportFragmentManager(), "TAG");
     }
-
 
     @Override
     public void onSongClicked(int index) {

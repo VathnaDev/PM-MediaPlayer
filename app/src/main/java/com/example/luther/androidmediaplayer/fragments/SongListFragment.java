@@ -3,7 +3,10 @@ package com.example.luther.androidmediaplayer.fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.view.PointerIconCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +17,7 @@ import com.example.luther.androidmediaplayer.R;
 import com.example.luther.androidmediaplayer.adapters.SongListReyclerAdapter;
 import com.example.luther.androidmediaplayer.model.Song;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -79,6 +83,7 @@ public class SongListFragment extends BottomSheetDialogFragment {
         Picasso.get()
                 .load(currentPlayingSong.getArtistPhoto())
                 .into(ivArtist);
+
     }
 
     public interface OnSongClickListener{
