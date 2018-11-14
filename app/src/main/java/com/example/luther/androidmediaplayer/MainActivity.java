@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     private List<Song> songs;
     private boolean isRepeat;
     private boolean isShuffle;
+    private Random rand = new Random();
+
     //endregion
 
     private ObjectAnimator animator;
@@ -238,9 +240,7 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
                     if (isRepeat)
                         changeSong(songIndex);
                     else if (isShuffle) {
-                        Random rand = new Random();
-                        int n = rand.nextInt(songs.size());
-                        changeSong(n);
+                        changeSong(rand.nextInt(songs.size()));
                     } else
                         changeSong(songIndex + 1);
                 }
@@ -328,6 +328,9 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         int nextIndex = currentIndex + 1;
         if (currentIndex == songs.size() - 1)
             nextIndex = 0;
+        if(isShuffle){
+            nextIndex = rand.nextInt(songs.size());
+        }
         changeSong(nextIndex);
     }
 
