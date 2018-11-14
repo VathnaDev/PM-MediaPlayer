@@ -1,7 +1,7 @@
 # This app is a demonstration of how to work with media player.
 
 ### Player Screen
-![alt text](https://github.com/VathnaDev/PM-MediaPlayer/blob/master/app/screenshots/Screenshot_1542178137.png width="200" height="400")
+![alt text](https://github.com/VathnaDev/PM-MediaPlayer/blob/master/app/screenshots/Screenshot_1542178137.png){:height="700px" width="400px"}
 
 ## Songs List BottomSheet
 ![alt text](https://github.com/VathnaDev/PM-MediaPlayer/blob/master/app/screenshots/Screenshot_1542178146.png)
