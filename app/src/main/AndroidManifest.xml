@@ -18,11 +18,15 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".VideoPlayerActivity"></activity>
+		<activity android:name=".VideoPlayerActivity" />
 		
 		<meta-data
 			android:name="preloaded_fonts"
 			android:resource="@array/preloaded_fonts" />
+		
+		<service android:name=".services.MusicService" />
+		
+		<activity android:name=".TestActvitiy"></activity>
 	</application>
 
 </manifest>
