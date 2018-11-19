@@ -68,9 +68,6 @@ public class SongListFragment extends BottomSheetDialogFragment {
         }
     }
 
-
-    
-
     public static SongListFragment instance(List<Song> songList, Song currentSong) {
         songs = songList;
         currentPlayingSong = currentSong;
