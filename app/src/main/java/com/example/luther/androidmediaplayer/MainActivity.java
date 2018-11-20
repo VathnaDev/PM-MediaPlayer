@@ -1,6 +1,5 @@
 package com.example.luther.androidmediaplayer;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -117,92 +116,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-////        changeSong(0);
-//        btnPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause_circle));
-//
-//
-////        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
-////        ivArtistProfile.startAnimation(rotateAnimation);
-//
-//
-//        animator = ObjectAnimator.ofFloat(ivArtistProfile,"rotation",0f,360f);
-//        animator.setDuration(5000);
-//        animator.setRepeatCount(ValueAnimator.INFINITE);
-//        animator.setRepeatMode(ValueAnimator.RESTART);
-//        animator.setInterpolator(new LinearInterpolator());
-//        animator.start();
-//
-//
-//        tvEndTime.setText(String.format("%02d:%02d",
-//                TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
-//                TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
-//                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()))
-//        ));
-//
-//        double startTime = 0;
-//        seekbar.setProgress((int) startTime);
-//        seekbar.setMax(mMediaPlayer.getDuration() / 1000);
-//        seekbar.getThumb().mutate().setAlpha(0);
-//
-//        myHandler.postDelayed(UpdateSongTime, 1000);
-//
-//        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                if (fromUser) {
-//                    mMediaPlayer.seekTo(progress * 1000);
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
-//
-//        //Setup Volume SeekBar
-//        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-//        skVolume.setMax(audioManager
-//                .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-//        skVolume.setProgress(audioManager
-//                .getStreamVolume(AudioManager.STREAM_MUSIC));
-//
-//        skVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                if (fromUser) {
-//                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-//                            progress, 0);
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
-
-        //Restore User Settings
-//        SharedPreferences pref = Pref.getSharedPreferences(this);
-//        isShuffle = pref.getBoolean(IS_SHUFFLE, false);
-//        isRepeat = pref.getBoolean(IS_REPEAT, false);
-//
-//        int color = isRepeat ? R.drawable.ic_repeat_one : R.drawable.ic_repeat;
-//        btnRepeat.setImageDrawable(getResources().getDrawable(color));
-//
-//        color = isShuffle ? R.color.colorGreen : android.R.color.white;
-//        btnShuffle.setImageTintList(getResources().getColorStateList(color));
         mMediaPlayer = MusicPlayer.newInstance();
         mMediaPlayer.setSongs(MusicFactory.getSongs(this));
         mMediaPlayer.changeSong(this, 0);
@@ -341,70 +254,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
         return super.onKeyDown(keyCode, event);
     }
 
-    @SuppressLint("DefaultLocale")
-    private void changeSong(final int songIndex) {
-//        try {
-//            currentPlayingSong = songs.get(songIndex);
-//            mMediaPlayer.reset();
-//            mMediaPlayer.setDataSource(this, currentPlayingSong.getSongUri());
-//            mMediaPlayer.prepare();
-//            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mp) {
-//                    mp.start();
-//                }
-//            });
-//            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                @Override
-//                public void onCompletion(MediaPlayer mp) {
-//                    if (isRepeat)
-//                        changeSong(songIndex);
-//                    else if (isShuffle) {
-//                        changeSong(rand.nextInt(songs.size()));
-//                    } else
-//                        changeSong(songIndex + 1);
-//                }
-//            });
-//
-//            tvArtistName.setText(currentPlayingSong.getArtistName());
-//            tvSongTitle.setText(currentPlayingSong.getTitle());
-//            Picasso.get()
-//                    .load(currentPlayingSong.getArtistPhoto())
-//                    .into(ivArtistProfile);
-//            Picasso.get()
-//                    .load(currentPlayingSong.getArtistPhoto())
-//                    .into(new Target() {
-//                        @Override
-//                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                            Blurry.with(MainActivity.this)
-//                                    .sampling(1)
-//                                    .color(Color.argb(66, 0, 200, 255))
-//                                    .from(bitmap)
-//                                    .into(ivBackground);
-//                        }
-//
-//                        @Override
-//                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-//                            Log.d("TAG", "onBitmapFailed: " + e.getMessage());
-//                        }
-//
-//                        @Override
-//                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//                        }
-//                    });
-//
-//            tvEndTime.setText(String.format("%02d:%02d",
-//                    TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
-//                    TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
-//                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()))
-//            ));
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
-
     private Runnable UpdateSongTime = new Runnable() {
         @SuppressLint("DefaultLocale")
         @Override
@@ -435,34 +284,18 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
     @OnClick(R.id.btnPre)
     public void onBtnPreClicked() {
-//        int currentIndex = songs.indexOf(currentPlayingSong);
-//        int preIndex = currentIndex - 1;
-//        if (currentIndex == 0)
-//            preIndex = songs.size() - 1;
-//        changeSong(preIndex);
         mMediaPlayer.onPreviouseSong(this);
         updateSongUi();
     }
 
     @OnClick(R.id.btnNext)
     public void onBtnNextClicked() {
-//        int currentIndex = songs.indexOf(currentPlayingSong);
-//        int nextIndex = currentIndex + 1;
-//        if (currentIndex == songs.size() - 1)
-//            nextIndex = 0;
-//        if(isShuffle){
-//            nextIndex = rand.nextInt(songs.size());
-//        }
-//        changeSong(nextIndex);
         mMediaPlayer.onNextSong(this);
         updateSongUi();
     }
 
     @OnClick(R.id.btnRepeat)
     public void onBtnRepeatClicked() {
-//        isRepeat = !isRepeat;
-//        int iconId = isRepeat ? R.drawable.ic_repeat_one : R.drawable.ic_repeat;
-//        btnRepeat.setImageDrawable(getResources().getDrawable(iconId));
         mMediaPlayer.setRepeat(!mMediaPlayer.isRepeat());
         int iconId = mMediaPlayer.isRepeat() ? R.drawable.ic_repeat_one : R.drawable.ic_repeat;
         btnRepeat.setImageDrawable(getResources().getDrawable(iconId));
@@ -470,16 +303,12 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
     @OnClick(R.id.btnSongList)
     public void onBtnSongListClicked() {
-//        songListFragment = SongListFragment.instance(songs, currentPlayingSong);
-//        songListFragment.show(getSupportFragmentManager(), "TAG");
         songListFragment = SongListFragment.instance(mMediaPlayer.getSongs(), mMediaPlayer.getCurrentPlayingSong());
         songListFragment.show(getSupportFragmentManager(), "TAG");
     }
 
     @Override
     public void onSongClicked(int index) {
-//        changeSong(index);
-//        songListFragment.notifySongChanged(currentPlayingSong);
         mMediaPlayer.changeSong(this, index);
         songListFragment.notifySongChanged(mMediaPlayer.getCurrentPlayingSong());
         updateSongUi();
@@ -487,9 +316,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
 
     @OnClick(R.id.btnShuffle)
     public void onViewClicked() {
-//        isShuffle = !isShuffle;
-//        int color = isShuffle ? R.color.colorGreen : android.R.color.white;
-//        btnShuffle.setImageTintList(getResources().getColorStateList(color));
         mMediaPlayer.setShuffle(!mMediaPlayer.isShuffle());
         int color = mMediaPlayer.isShuffle() ? R.color.colorGreen : android.R.color.white;
         btnShuffle.setImageTintList(getResources().getColorStateList(color));
@@ -498,11 +324,6 @@ public class MainActivity extends AppCompatActivity implements SongListFragment.
     @Override
     protected void onStop() {
         super.onStop();
-//        //Save user settings
-//        SharedPreferences.Editor editor = Pref.getEditor(this);
-//        editor.putBoolean(IS_REPEAT, isRepeat);
-//        editor.putBoolean(IS_SHUFFLE, isShuffle);
-//        editor.commit();
         //Save user settings
         SharedPreferences.Editor editor = Pref.getEditor(this);
         editor.putBoolean(IS_REPEAT, mMediaPlayer.isRepeat());
