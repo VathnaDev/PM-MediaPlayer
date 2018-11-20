@@ -3,10 +3,10 @@ package com.example.luther.androidmediaplayer.fragments;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.view.PointerIconCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,7 +17,6 @@ import com.example.luther.androidmediaplayer.R;
 import com.example.luther.androidmediaplayer.adapters.SongListReyclerAdapter;
 import com.example.luther.androidmediaplayer.model.Song;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -48,6 +47,11 @@ public class SongListFragment extends BottomSheetDialogFragment {
         tvArtistName = contentView.findViewById(R.id.tvArtistName);
 
         adapter = new SongListReyclerAdapter(songs,listener);
+        View contentView = View.inflate(getContext(), R.layout.song_list_layout, null);
+        dialog.setContentView(contentView);
+
+        RecyclerView rvSongList = contentView.findViewById(R.id.rvSongList);
+                SongListReyclerAdapter adapter = new SongListReyclerAdapter(songs, listener);
         rvSongList.setAdapter(adapter);
         rvSongList.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         tvArtistName.setText(currentPlayingSong.getArtistName());
@@ -56,6 +60,14 @@ public class SongListFragment extends BottomSheetDialogFragment {
                 .load(currentPlayingSong.getArtistPhoto())
                 .into(ivArtist);
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ivArtist = view.findViewById(R.id.ivArtist);
+        tvSongTitle = view.findViewById(R.id.tvSongTitle);
+        tvArtistName = view.findViewById(R.id.tvArtistName);
     }
 
     @Override
